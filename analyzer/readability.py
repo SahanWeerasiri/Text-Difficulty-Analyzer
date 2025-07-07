@@ -1,9 +1,7 @@
-```python
 import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 
-# Download necessary NLTK data
 try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
@@ -32,20 +30,15 @@ def calculate_readability(text: str) -> float:
         num_sentences = len(sentences)
         num_words = len(words)
 
-        #Simplified Flesch Reading Ease (modification)
         average_sentence_length = num_words / num_sentences
 
-        # Number of complex words - approximation using word length (adjust threshold)
         complex_word_count = sum(1 for word in words if len(word) > 6)
         percentage_complex_words = (complex_word_count / num_words) * 100
 
-        # Modified Flesch Reading Ease formula, incorporate complex words
-        readability_score = 200 - (1.0 * average_sentence_length) - (1.5 * percentage_complex_words)
+        readability_score = 200 - average_sentence_length - (1.5 * percentage_complex_words)
 
-
-        return readability_score if readability_score > 0 else 0.1
+        return max(0.1, readability_score)
 
     except Exception as e:
         print(f"Error calculating readability: {e}")
         return 0.0
-```
