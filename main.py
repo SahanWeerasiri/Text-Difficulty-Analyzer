@@ -1,5 +1,4 @@
-```python
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Dict
 import analyzer
@@ -17,11 +16,13 @@ class TextRequest(BaseModel):
 async def analyze_text(request: TextRequest) -> Dict[str, float]:
     try:
         difficulty_score = analyzer.analyze_text_difficulty(request.text)
-        return {"difficulty_score": difficulty_score}
+        if not isinstance(difficulty_score, (int, float)):
+            raise ValueError("Analyzer returned an invalid difficulty score.")
+        return {"difficulty_score": float(difficulty_score)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
-```
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
