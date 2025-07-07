@@ -20,7 +20,7 @@ async def analyze_text(request: TextRequest) -> Dict[str, float]:
             raise ValueError("Analyzer returned an invalid difficulty score.")
         return {"difficulty_score": float(difficulty_score)}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn
