@@ -38,7 +38,7 @@ def analyze_text_difficulty(text: str) -> float:
         vocab_score = vocabulary.analyze_vocabulary(text)
         readability_score = readability.calculate_readability(text)
 
-        if structure_score <= 0 or vocab_score <= 0 or readability_score <= 0:
+        if any(score <= 0 for score in [structure_score, vocab_score, readability_score]):
             return 0.0
 
         geometric_mean = math.pow(structure_score * vocab_score * readability_score, 1/3)
