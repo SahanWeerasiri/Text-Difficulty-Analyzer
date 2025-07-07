@@ -22,7 +22,7 @@ def analyze_sentence_structure(sentences: list[str]) -> float:
                A higher score indicates more complex structures.
     """
     if not sentences:
-        return 0.0
+        return 0.1
 
     total_sentences = len(sentences)
     total_words = 0
@@ -36,8 +36,8 @@ def analyze_sentence_structure(sentences: list[str]) -> float:
         if num_words > long_sentence_threshold:
             long_sentence_count += 1
 
-    average_sentence_length = total_words / total_sentences if total_sentences > 0 else 0
-    long_sentence_ratio = long_sentence_count / total_sentences if total_sentences > 0 else 0
+    average_sentence_length = total_words / total_sentences
+    long_sentence_ratio = long_sentence_count / total_sentences
 
     structure_score = average_sentence_length * long_sentence_ratio
 
