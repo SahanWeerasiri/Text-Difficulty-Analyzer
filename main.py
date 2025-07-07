@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Dict
-import analyzer
+import analyzer.analyzer as analyzer
 import os
 from dotenv import load_dotenv
 

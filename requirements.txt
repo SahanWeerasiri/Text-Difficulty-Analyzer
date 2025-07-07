@@ -3,9 +3,4 @@ uvicorn
 python-dotenv
 nltk
 scikit-learn
-analyzer
 pydantic
-math
-os
-typing
-collections
