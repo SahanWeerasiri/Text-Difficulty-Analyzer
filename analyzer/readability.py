@@ -6,6 +6,7 @@ try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
     nltk.download('stopwords')
+    nltk.download('punkt')
 
 stop_words = set(stopwords.words('english'))
 
@@ -22,7 +23,7 @@ def calculate_readability(text: str) -> float:
     """
     try:
         sentences = sent_tokenize(text)
-        words = [word.lower() for word in word_tokenize(text) if word.isalpha() and word.lower() not in stop_words]
+        words = [w.lower() for w in word_tokenize(text) if w.isalpha() and w.lower() not in stop_words]
 
         if not sentences or not words:
             return 0.0
@@ -30,14 +31,13 @@ def calculate_readability(text: str) -> float:
         num_sentences = len(sentences)
         num_words = len(words)
 
-        average_sentence_length = num_words / num_sentences
+        avg_sentence_length = num_words / num_sentences
+        complex_words = sum(1 for word in words if len(word) > 6)
+        percent_complex_words = (complex_words / num_words) * 100
 
-        complex_word_count = sum(1 for word in words if len(word) > 6)
-        percentage_complex_words = (complex_word_count / num_words) * 100
+        readability_score = 206.835 - (1.015 * avg_sentence_length) - (84.6 * percent_complex_words)
 
-        readability_score = 200 - average_sentence_length - (1.5 * percentage_complex_words)
-
-        return max(0.1, readability_score)
+        return max(0.0, readability_score)
 
     except Exception as e:
         print(f"Error calculating readability: {e}")
